@@ -1,8 +1,8 @@
 #ifndef LIB_WEBSERVER_RESPONSEHEADER_H
 #define LIB_WEBSERVER_RESPONSEHEADER_H
 
+#include "../Util/String.h"
 #include <iostream>
-#include <string>
 #include <unordered_map>
 #include <vector>
 
@@ -15,11 +15,11 @@ namespace Lib {
 			public:
 				ResponseHeader();
 				~ResponseHeader();
-				std::vector<std::string> *list(void);
-				std::string get(std::string);
-				bool has(std::string);
-				void set(std::string, std::string);
-				void unset(std::string);
+				std::vector<Lib::Util::String> *list(void);
+				Lib::Util::String get(Lib::Util::String);
+				bool has(Lib::Util::String);
+				void set(Lib::Util::String, Lib::Util::String);
+				void unset(Lib::Util::String);
 			private:
 				std::unordered_map<std::string, std::string> vh_header;
 		};

@@ -1,7 +1,11 @@
 #ifndef LIB_WEBSERVER_REQUESTHEADER_H
 #define LIB_WEBSERVER_REQUESTHEADER_H
 
-#include <string>
+#include "../Util/String.h"
+#include <microhttpd.h>
+#include <iostream>
+#include <unordered_map>
+#include <vector>
 
 namespace Lib {
 
@@ -9,13 +13,14 @@ namespace Lib {
 
 		class RequestHeader {
 			public:
-				RequestHeader(const char * , const char *);
+				RequestHeader(MHD_Connection *o_connection);
 				~RequestHeader();
-				std::string name(void);
-				std::string value(void);
+				bool has(Lib::Util::String);
+				std::vector<Lib::Util::String> *list(void);
+				void trace(void);
+				Lib::Util::String operator[](Lib::Util::String);
 			private:
-				std::string st_name;
-				std::string st_value;
+				std::unordered_map<std::string, std::string> *phst_header;
 		};
 	}
 }

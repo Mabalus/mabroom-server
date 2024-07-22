@@ -2,8 +2,8 @@
 #define LIB_WEBSERVER_RESPONSE_H
 
 #include "ResponseHeader.h"
+#include "../Util/String.h"
 #include <microhttpd.h>
-#include <string>
 #include <cstring>
 #include <vector>
 
@@ -17,12 +17,12 @@ namespace Lib {
 				Response(MHD_Connection *);
 				~Response();
 				Lib::WebServer::ResponseHeader *header(void);
-				int send(void);
-				void setContent(std::string *,std::string);
+				int send(u_int32_t in_code);
+				void setContent(Lib::Util::String *,Lib::Util::String);
 
 			private:
 				MHD_Connection *pt_connection;
-				std::string *st_content;
+				Lib::Util::String *st_content;
 				Lib::WebServer::ResponseHeader *o_header;
 		};
 	}

@@ -10,13 +10,13 @@ INCDIR = ./include
 
 MAIN_SOURCES = $(SRCDIR)/server.cpp
 APP_SOURCES = $(wildcard $(SRCDIR)/Application/*.cpp)
-LIB_SOURCES = $(wildcard $(SRCDIR)/Lib/WebServer/*.cpp)
+LIB_SOURCES = $(wildcard $(SRCDIR)/Lib/WebServer/*.cpp $(SRCDIR)/Lib/Util/*.cpp)
 
 SOURCES = $(MAIN_SOURCES) $(APP_SOURCES) $(LIB_SOURCES)
 
 OBJECTS = $(SOURCES:.cpp=.o)
 
-LIBS = -lmicrohttpd -lpthread
+LIBS = -lmicrohttpd -lpthread -luuid
 
 all: $(TARGET)
 

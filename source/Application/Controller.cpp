@@ -2,13 +2,6 @@
 
 MHD_Daemon *Application::Controller::pt_daemon = nullptr;
 
-enum MHD_Result getHeaders(void *pmx_data, enum MHD_ValueKind en_kind, const char *st_key, const char *st_value) {
-    std::unordered_map<std::string, std::string> *phst_header = pmx_data;
-    (void)en_kind;
-    std::cout << st_key << ": " << st_value << std::endl;
-    return MHD_YES;
-}
-
 int request(
 	void *pmx_data,
 	MHD_Connection *o_connection,
@@ -19,24 +12,23 @@ int request(
 	size_t *pin_content_size,
 	void **pmx_args
 ) {
-	std::unordered_map<std::string, std::string> *phst_header = new std::unordered_map<std::string, std::string>();
-	MHD_get_connection_values(o_connection, MHD_HEADER_KIND, getHeaders, vh_header);
-	std::string st_url(pch_url);
-	std::string st_method(pch_method);
-	std::string st_version(pch_version);
-	std::string st_content = (pch_content != nullptr) ? std::string(pch_content) : std::string();
+	Lib::Util::String st_url(pch_url);
+	Lib::Util::String st_method(pch_method);
+	Lib::Util::String st_version(pch_version);
+	Lib::Util::String st_content = (pch_content != nullptr) ? Lib::Util::String(pch_content) : Lib::Util::String();
 	Lib::WebServer::Request *o_request = new Lib::WebServer::Request(
+		o_connection,
 		st_url,
 		st_method,
 		st_version,
 		st_content
 	);
 	Lib::WebServer::Response *o_response = new Lib::WebServer::Response(o_connection);
-	int ret = Application::Controller::dispatcher(
+	int in_response = Application::Controller::dispatcher(
 		o_request,
 		o_response
 	);
-	return ret;
+	return in_response;
 }
 
 void Application::Controller::run() {
@@ -62,11 +54,16 @@ int Application::Controller::dispatcher(
 	Lib::WebServer::Request *o_request,
 	Lib::WebServer::Response *o_response
 ) {
-	std::string st_content = "{ \"name\": \"backend\", \"pch_version\": \"0.1.0\" }";
-	
-	o_response->setContent(&st_content,"application/json");
-	o_response->header()->set("X-Power", "Mabalus");
-	return o_response->send();
+	//std::cout << " >>>>>>>>>>> URL >>>> " << o_request->url() << std::endl;
+	//Lib::Util::String st_header = (*o_request->header())["Accept"];
+	//std::cout << " >>>>>> header >> " << st_header << std::endl;
+	o_request->trace();
+	if(o_request->url() == "/") {
+		Lib::Util::String st_content = "{ \"name\": \"backend\", \"version\": \"0.1.0\" }";
+		o_response->setContent(&st_content,"application/json");
+		return o_response->send(MHD_HTTP_OK);
+	}
+	return o_response->send(MHD_HTTP_NOT_FOUND);
 }
 
 

@@ -3,9 +3,9 @@
 
 #include "../Lib/WebServer/Request.h"
 #include "../Lib/WebServer/Response.h"
+#include "../Lib/Util/String.h"
 #include <microhttpd.h>
 #include <iostream>
-#include <string>
 #include <cstring>
 
 namespace Application {

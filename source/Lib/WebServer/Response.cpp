@@ -2,7 +2,7 @@
 
 Lib::WebServer::Response::Response(MHD_Connection *pt_connection)
 	: pt_connection(pt_connection) {
-		this->st_content =  new std::string();
+		this->st_content = nullptr;
 		this->o_header = new Lib::WebServer::ResponseHeader();
 	};
 
@@ -12,31 +12,37 @@ Lib::WebServer::ResponseHeader *Lib::WebServer::Response::header(void) {
 	return this->o_header;
 }
 
-int Lib::WebServer::Response::send(void) {
+int Lib::WebServer::Response::send(u_int32_t in_code) {
 	/*
 	* Prepare Content
 	*/
-	u_int64_t in_content = this->st_content->length() + 1;
-	char *pch_content = new char[in_content];
-	std::strcpy(pch_content,this->st_content->c_str());
-	/*
-	* Create Response
-	*/
-	MHD_Response *t_response = MHD_create_response_from_buffer(
+	MHD_Response *t_response = nullptr;
+	char *pch_content = nullptr;
+	u_int64_t in_content = 0;
+	if(this->st_content) {
+		if(!this->o_header->has("content-type"))
+			this->o_header->set("content-type","plain/text");
+		in_content = this->st_content->length() + 1;
+		pch_content = new char[in_content];
+		std::strcpy(pch_content,this->st_content->c_str());
+	}
+	t_response = MHD_create_response_from_buffer(
 		in_content,
 		(void*) pch_content,
-		MHD_RESPMEM_PERSISTENT
+		MHD_RESPMEM_MUST_FREE
 	);
+	if(!t_response)
+		return MHD_NO;
 	/*
 	* Prepare Content Type
 	*/
-	std::vector<std::string> *vst_header = this->o_header->list();
+	std::vector<Lib::Util::String> *vst_header = this->o_header->list();
 	for (auto st_item = vst_header->begin(); st_item != vst_header->end(); ++st_item) {
-		std::string st_name = *st_item;
+		Lib::Util::String st_name = *st_item;
 		u_int64_t in_name = st_name.length() + 1;
 		char *pch_name = new char[in_name];
 		std::strcpy(pch_name, st_name.c_str());
-		std::string st_value = this->o_header->get(st_name);
+		Lib::Util::String st_value = this->o_header->get(st_name);
 		if(st_value.length() > 0) {
 			u_int64_t in_value = st_value.length() + 1;
 			char *pch_value = new char[in_value];
@@ -47,12 +53,12 @@ int Lib::WebServer::Response::send(void) {
 	/*
 	* Send Response
 	*/
-	int in_response = MHD_queue_response(this->pt_connection, MHD_HTTP_OK, t_response);
+	int in_response = MHD_queue_response(this->pt_connection, in_code, t_response);
 	MHD_destroy_response(t_response);
 	return in_response;
 }
 
-void Lib::WebServer::Response::setContent(std::string *st_content,std::string st_content_type) {
+void Lib::WebServer::Response::setContent(Lib::Util::String *st_content,Lib::Util::String st_content_type) {
 	this->o_header->set("Content-Type",st_content_type);
 	this->st_content = st_content;
 }
