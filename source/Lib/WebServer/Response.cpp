@@ -1,18 +1,18 @@
 #include "Response.h"
 
-Lib::WebServer::Response::Response(MHD_Connection *pt_connection)
+lib::webserver::Response::Response(MHD_Connection *pt_connection)
 	: pt_connection(pt_connection) {
 		this->st_content = nullptr;
-		this->o_header = new Lib::WebServer::ResponseHeader();
+		this->o_header = new lib::webserver::response::Header();
 	};
 
-Lib::WebServer::Response::~Response() {}
+lib::webserver::Response::~Response() {}
 
-Lib::WebServer::ResponseHeader *Lib::WebServer::Response::header(void) {
+lib::webserver::response::Header *lib::webserver::Response::header(void) {
 	return this->o_header;
 }
 
-int Lib::WebServer::Response::send(u_int32_t in_code) {
+int lib::webserver::Response::send(u_int32_t in_code) {
 	/*
 	* Prepare Content
 	*/
@@ -36,13 +36,13 @@ int Lib::WebServer::Response::send(u_int32_t in_code) {
 	/*
 	* Prepare Content Type
 	*/
-	std::vector<Lib::Util::String> *vst_header = this->o_header->list();
+	std::vector<lib::util::String> *vst_header = this->o_header->list();
 	for (auto st_item = vst_header->begin(); st_item != vst_header->end(); ++st_item) {
-		Lib::Util::String st_name = *st_item;
+		lib::util::String st_name = *st_item;
 		u_int64_t in_name = st_name.length() + 1;
 		char *pch_name = new char[in_name];
 		std::strcpy(pch_name, st_name.c_str());
-		Lib::Util::String st_value = this->o_header->get(st_name);
+		lib::util::String st_value = this->o_header->get(st_name);
 		if(st_value.length() > 0) {
 			u_int64_t in_value = st_value.length() + 1;
 			char *pch_value = new char[in_value];
@@ -58,7 +58,7 @@ int Lib::WebServer::Response::send(u_int32_t in_code) {
 	return in_response;
 }
 
-void Lib::WebServer::Response::setContent(Lib::Util::String *st_content,Lib::Util::String st_content_type) {
+void lib::webserver::Response::setContent(lib::util::String *st_content,lib::util::String st_content_type) {
 	this->o_header->set("Content-Type",st_content_type);
 	this->st_content = st_content;
 }

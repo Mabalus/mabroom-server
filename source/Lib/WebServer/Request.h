@@ -1,49 +1,50 @@
 #ifndef LIB_WEBSERVER_REQUEST_H
 #define LIB_WEBSERVER_REQUEST_H
 
-#include "RequestHeader.h"
-#include "RequestQuery.h"
+#include "Connection.h"
+#include "Request/Header.h"
+#include "Request/Query.h"
 #include "../Util/String.h"
 #include "../Util/UUID.h"
 #include <microhttpd.h>
 #include <iostream>
 #include <unordered_map>
 #include <vector>
+#include <memory>
 
-namespace Lib {
+namespace lib {
 
-	namespace WebServer {
+	namespace webserver {
 
 		class Request {
 
 			public:
 				Request(
-					MHD_Connection *o_connection,
-					Lib::Util::String,
-					Lib::Util::String,
-					Lib::Util::String,
-					Lib::Util::String
+					std::shared_ptr<lib::webserver::Connection>,
+					lib::util::String,
+					lib::util::String,
+					lib::util::String
 				);
 				~Request();
-				MHD_Connection *connection(void);
-				Lib::WebServer::RequestHeader *header(void);
-				Lib::WebServer::RequestQuery *query(void);
-				Lib::Util::UUID id(void);
-				Lib::Util::String url(void);
-				Lib::Util::String method(void);
+				std::shared_ptr<lib::webserver::Connection> connection(void);
+				std::shared_ptr<lib::webserver::request::Header> header(void);
+				std::shared_ptr<lib::webserver::request::Query> query(void);
+				lib::util::UUID id(void);
+				lib::util::String url(void);
+				lib::util::String method(void);
 				void trace(void);
-				Lib::Util::String version(void);
+				lib::util::String version(void);
 				void *content(void);
 
 			private:
-				MHD_Connection *o_connection;
-				Lib::Util::String st_url;
-				Lib::Util::String st_method;
-				Lib::Util::String st_version;
+				std::shared_ptr<lib::webserver::Connection> po_connection;
+				lib::util::String st_url;
+				lib::util::String st_method;
+				lib::util::String st_version;
 				void *pmx_content;
-				Lib::Util::UUID o_id;
-				Lib::WebServer::RequestHeader *o_header;
-				Lib::WebServer::RequestQuery *o_query;
+				lib::util::UUID o_id;
+				std::shared_ptr<lib::webserver::request::Header> po_header;
+				std::shared_ptr<lib::webserver::request::Query> po_query;
 		};
 	}
 }

@@ -1,10 +1,11 @@
 #include "Controller.h"
+#include "../Lib/WebServer/Connection.h"
 
 MHD_Daemon *Application::Controller::pt_daemon = nullptr;
 
 int request(
 	void *pmx_data,
-	MHD_Connection *o_connection,
+	MHD_Connection *pt_connection,
 	const char *pch_url,
 	const char *pch_method,
 	const char *pch_version,
@@ -12,18 +13,20 @@ int request(
 	size_t *pin_content_size,
 	void **pmx_args
 ) {
-	Lib::Util::String st_url(pch_url);
-	Lib::Util::String st_method(pch_method);
-	Lib::Util::String st_version(pch_version);
-	Lib::Util::String st_content = (pch_content != nullptr) ? Lib::Util::String(pch_content) : Lib::Util::String();
-	Lib::WebServer::Request *o_request = new Lib::WebServer::Request(
-		o_connection,
+	lib::util::String st_url(pch_url);
+	lib::util::String st_method(pch_method);
+	lib::util::String st_version(pch_version);
+	lib::util::String st_content = (pch_content != nullptr) ? lib::util::String(pch_content) : lib::util::String();
+	std::cout << " pch_content: " << st_content << std::endl;
+	std::cout << " pin_content_size: " << *pin_content_size << std::endl;
+	std::shared_ptr<lib::webserver::Connection> po_connection = std::make_shared<lib::webserver::Connection>(pt_connection);
+	lib::webserver::Request *o_request = new lib::webserver::Request(
+		po_connection,
 		st_url,
 		st_method,
-		st_version,
-		st_content
+		st_version
 	);
-	Lib::WebServer::Response *o_response = new Lib::WebServer::Response(o_connection);
+	lib::webserver::Response *o_response = new lib::webserver::Response(pt_connection);
 	int in_response = Application::Controller::dispatcher(
 		o_request,
 		o_response
@@ -51,15 +54,15 @@ void Application::Controller::run() {
 }
 
 int Application::Controller::dispatcher(
-	Lib::WebServer::Request *o_request,
-	Lib::WebServer::Response *o_response
+	lib::webserver::Request *o_request,
+	lib::webserver::Response *o_response
 ) {
 	//std::cout << " >>>>>>>>>>> URL >>>> " << o_request->url() << std::endl;
-	//Lib::Util::String st_header = (*o_request->header())["Accept"];
+	//lib::util::String st_header = (*o_request->header())["Accept"];
 	//std::cout << " >>>>>> header >> " << st_header << std::endl;
 	o_request->trace();
 	if(o_request->url() == "/") {
-		Lib::Util::String st_content = "{ \"name\": \"backend\", \"version\": \"0.1.0\" }";
+		lib::util::String st_content = "{ \"name\": \"backend\", \"version\": \"0.1.0\" }";
 		o_response->setContent(&st_content,"application/json");
 		return o_response->send(MHD_HTTP_OK);
 	}

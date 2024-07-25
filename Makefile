@@ -3,30 +3,33 @@ TARGET = server
 
 # Compilador e flags
 CXX = clang++-16
-CXXFLAGS = -Wall -Wextra -std=c++20
+CXXFLAGS = -Wall -Wextra -std=c++20 -I.
 
 SRCDIR = ./source
-INCDIR = ./include
+LIBS = -lmicrohttpd -lpthread -luuid
+INCLUDE = -L$(SRCDIR)/Lib/lib -llib
 
 MAIN_SOURCES = $(SRCDIR)/server.cpp
 APP_SOURCES = $(wildcard $(SRCDIR)/Application/*.cpp)
-LIB_SOURCES = $(wildcard $(SRCDIR)/Lib/WebServer/*.cpp $(SRCDIR)/Lib/Util/*.cpp)
 
-SOURCES = $(MAIN_SOURCES) $(APP_SOURCES) $(LIB_SOURCES)
-
+SOURCES = $(MAIN_SOURCES) $(APP_SOURCES)
 OBJECTS = $(SOURCES:.cpp=.o)
 
-LIBS = -lmicrohttpd -lpthread -luuid
+all: lib main
 
-all: $(TARGET)
+lib:
+	$(MAKE) -C $(SRCDIR)/Lib
+
+main: $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(INCLUDE)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
+	$(MAKE) -C $(SRCDIR)/Lib clean
 	rm -f $(TARGET) $(OBJECTS)
 
 .PHONY: all clean

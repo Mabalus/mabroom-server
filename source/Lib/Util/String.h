@@ -6,9 +6,9 @@
 #include <cctype>
 #include <algorithm>
 
-namespace Lib {
+namespace lib {
 
-	namespace Util {
+	namespace util {
 
 		class String : public std::string {
 

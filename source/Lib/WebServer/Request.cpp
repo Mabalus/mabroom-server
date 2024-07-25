@@ -1,49 +1,79 @@
 #include "Request.h"
 
-Lib::WebServer::Request::Request(
-	MHD_Connection *o_connection,
-	Lib::Util::String st_url,
-	Lib::Util::String st_method,
-	Lib::Util::String st_version,
-	Lib::Util::String st_content
-) : o_connection(o_connection),  
+lib::webserver::Request::Request(
+	std::shared_ptr<lib::webserver::Connection> po_connection,
+	lib::util::String st_url,
+	lib::util::String st_method,
+	lib::util::String st_version
+) : po_connection(po_connection),
 	st_url(st_url),
 	st_method(st_method),
-	st_version(st_version)
+	st_version(st_version),
+	po_header(std::make_shared<lib::webserver::request::Header>(po_connection)),
+	po_query(std::make_shared<lib::webserver::request::Query>(po_connection))
 {
-	this->o_header = new Lib::WebServer::RequestHeader(o_connection);
-	this->o_query = new Lib::WebServer::RequestQuery(o_connection);
-	
+	//std::shared_ptr<lib::webserver::Connection> po_connection = std::make_shared<lib::webserver::Connection>(pt_connection);
+	/*
+	auto getBody = [](
+		void *coninfo_cls,
+		enum MHD_ValueKind kind,
+		const char *key,
+		const char *filename,
+        const char *content_type,
+		const char *transfer_encoding,
+		const char *data,
+		uint64_t off,
+		size_t size
+	) -> enum MHD_Result {
+		(void) en_kind;
+		std::cout << "key: " << key << std::endl;
+		std::cout << "filename: " << filename << std::endl;
+		std::cout << "content_type: " << content_type << std::endl;
+		std::cout << "transfer_encoding: " << transfer_encoding << std::endl;
+		std::cout << "off: " << off << std::endl;
+		std::cout << "size: " << size << std::endl;
+		/*
+		std::unordered_map<std::string, std::string> *phst_header = static_cast<std::unordered_map<std::string, std::string> *>(pmx_data);
+		lib::util::String st_name = lib::util::String(pch_name);
+		lib::util::String st_value = lib::util::String(pch_value);
+		st_name.toLower();
+		(*phst_header)[st_name] = st_value;
+		
+		return MHD_YES;
+	};
+	lib::util::String *st_body;
+	MHD_get_connection_values(pt_connection, MHD_POSTDATA_KIND, getBody, st_body);
+	*/
 	//std::cout << " >>>>>>> test >> " << test << std::endl;
 }
 
-Lib::WebServer::Request::~Request() {}
+lib::webserver::Request::~Request() {}
 
-MHD_Connection *Lib::WebServer::Request::connection(void) {
-	return	this->o_connection;
+std::shared_ptr<lib::webserver::Connection> lib::webserver::Request::connection(void) {
+	return	this->po_connection;
 }
 
-void *Lib::WebServer::Request::content(void) {
+void *lib::webserver::Request::content(void) {
 	return	this->pmx_content;
 }
 
-Lib::WebServer::RequestHeader *Lib::WebServer::Request::header(void) {
-	return this->o_header;
+std::shared_ptr<lib::webserver::request::Header> lib::webserver::Request::header(void) {
+	return this->po_header;
 }
 
-Lib::Util::UUID Lib::WebServer::Request::id(void) {
+lib::util::UUID lib::webserver::Request::id(void) {
 	return this->o_id;
 }
 
-Lib::Util::String Lib::WebServer::Request::method(void) {
+lib::util::String lib::webserver::Request::method(void) {
 	return	this->st_method;
 }
 
-Lib::WebServer::RequestQuery *Lib::WebServer::Request::query(void) {
-	return this->o_query;
+std::shared_ptr<lib::webserver::request::Query> lib::webserver::Request::query(void) {
+	return this->po_query;
 }
 
-void Lib::WebServer::Request::trace(void) {
+void lib::webserver::Request::trace(void) {
 	std::cout << "=====================================" << std::endl;
 	std::cout << "============== REQUEST ==============" << std::endl;
 	std::cout << "=====================================" << std::endl;
@@ -51,15 +81,15 @@ void Lib::WebServer::Request::trace(void) {
 	std::cout << " url: " << this->st_url << std::endl;
 	std::cout << " method: " << this->st_method << std::endl;
 	std::cout << " version: " << this->st_version << std::endl;
-	this->o_header->trace();
-	this->o_query->trace();
+	this->po_header->trace();
+	this->po_query->trace();
 }
 
-Lib::Util::String Lib::WebServer::Request::url(void) {
+lib::util::String lib::webserver::Request::url(void) {
 	return	this->st_url;
 }
 
-Lib::Util::String Lib::WebServer::Request::version(void) {
+lib::util::String lib::webserver::Request::version(void) {
 	return	this->st_version;
 }
 

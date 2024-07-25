@@ -5,9 +5,9 @@
 #include <uuid/uuid.h>
 #include <iostream>
 
-namespace Lib {
+namespace lib {
 
-	namespace Util {
+	namespace util {
 
 		class UUID  {
 
@@ -15,9 +15,9 @@ namespace Lib {
 				UUID();
 				~UUID();
 				const uuid_t &get(void) const;
-				Lib::Util::String string(void);
+				lib::util::String string(void);
 				void trace(void);
-				Lib::Util::UUID &operator=(const UUID &);
+				lib::util::UUID &operator=(const UUID &);
 
 			private:
 				uuid_t t_uuid;
