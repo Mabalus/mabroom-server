@@ -20,11 +20,11 @@ namespace lib {
 					Header(std::shared_ptr<lib::webserver::Connection> po_connection);
 					~Header();
 					bool has(lib::util::String);
-					std::vector<lib::util::String> *list(void);
+					std::vector<lib::util::String> list(void);
 					void trace(void);
 					lib::util::String operator[](lib::util::String);
 				private:
-					std::shared_ptr<std::unordered_map<std::string, std::string>> phst_header;
+					std::unique_ptr<std::unordered_map<std::string, std::string>> phst_header;
 			};
 		}
 	}

@@ -22,12 +22,12 @@ namespace lib {
 					Query(std::shared_ptr<lib::webserver::Connection> po_connection);
 					~Query();
 					bool has(lib::util::String);
-					std::shared_ptr<std::vector<lib::util::String>> list(void);
+					std::vector<lib::util::String> list(void);
 					void trace(void);
 					std::any value(lib::util::String);
 					
 				private:
-					std::shared_ptr<std::unordered_map<std::string,std::any>> phmx_query;
+					std::unique_ptr<std::unordered_map<std::string,std::any>> phmx_query;
 			};
 		}
 	}

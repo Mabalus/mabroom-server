@@ -10,7 +10,7 @@ lib::webserver::request::Header::Header(std::shared_ptr<lib::webserver::Connecti
 		(*phst_data)[st_name] = st_value;
 		return MHD_YES;
     };
-	this->phst_header = std::make_shared<std::unordered_map<std::string, std::string>>();
+	this->phst_header = std::make_unique<std::unordered_map<std::string, std::string>>();
 	MHD_get_connection_values(po_connection->get(), MHD_HEADER_KIND, getHeaders, this->phst_header.get());
 }
 
@@ -21,10 +21,10 @@ bool lib::webserver::request::Header::has(lib::util::String st_name) {
 	return (*this->phst_header).contains(st_name);
 }
 
-std::vector<lib::util::String> *lib::webserver::request::Header::list(void) {
-	std::vector<lib::util::String> *vst_name = new std::vector<lib::util::String>();
+std::vector<lib::util::String> lib::webserver::request::Header::list(void) {
+	std::vector<lib::util::String> vst_name;
 	for(const auto &o_header : *this->phst_header)
-		vst_name->push_back(o_header.first);
+		vst_name.push_back(o_header.first);
     return vst_name;
 }
 

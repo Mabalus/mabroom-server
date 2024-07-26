@@ -15,10 +15,9 @@ lib::webserver::request::Query::Query(std::shared_ptr<lib::webserver::Connection
 				std::any_cast<std::shared_ptr<std::vector<lib::util::String>>>((*phst_data)[st_name])->push_back(pch_value);
 		else
 			(*phst_data)[st_name] = std::make_shared<lib::util::String>(pch_value);
-
 		return MHD_YES;
 	};
-	this->phmx_query = std::make_shared<std::unordered_map<std::string, std::any>>();
+	this->phmx_query = std::make_unique<std::unordered_map<std::string, std::any>>();
 	MHD_get_connection_values(po_connection->get(), MHD_GET_ARGUMENT_KIND, getQuery, this->phmx_query.get());
 }
 
@@ -29,10 +28,10 @@ bool lib::webserver::request::Query::has(lib::util::String st_name) {
 	return (*this->phmx_query).contains(st_name);
 }
 
-std::shared_ptr<std::vector<lib::util::String>> lib::webserver::request::Query::list(void) {
-	std::shared_ptr<std::vector<lib::util::String>> vst_name = std::make_shared<std::vector<lib::util::String>>();
+std::vector<lib::util::String> lib::webserver::request::Query::list(void) {
+	std::vector<lib::util::String> vst_name;
 	for(const auto &o_hash : *this->phmx_query)
-		vst_name->push_back(o_hash.first);
+		vst_name.push_back(o_hash.first);
 	return vst_name;
 }
 

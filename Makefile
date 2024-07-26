@@ -3,33 +3,29 @@ TARGET = server
 
 # Compilador e flags
 CXX = clang++-16
-CXXFLAGS = -Wall -Wextra -std=c++20 -I.
+CXXFLAGS = -Wall -Wextra -ftime-report -fsanitize=address -std=c++20 -I.
 
 SRCDIR = ./source
 LIBS = -lmicrohttpd -lpthread -luuid
-INCLUDE = -L$(SRCDIR)/Lib/lib -llib
 
-MAIN_SOURCES = $(SRCDIR)/server.cpp
-APP_SOURCES = $(wildcard $(SRCDIR)/Application/*.cpp)
+MAIN_DIR = $(SRCDIR)/main.a
+APPLICATION_DIR = $(SRCDIR)/Application/application.a
+LIB_DIR = $(SRCDIR)/Lib/lib.a
 
-SOURCES = $(MAIN_SOURCES) $(APP_SOURCES)
-OBJECTS = $(SOURCES:.cpp=.o)
+all: build $(TARGET)
 
-all: lib main
-
-lib:
+build: 
 	$(MAKE) -C $(SRCDIR)/Lib
+	$(MAKE) -C $(SRCDIR)/Application 
+	$(MAKE) -C $(SRCDIR)
 
-main: $(TARGET)
-
-$(TARGET): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(INCLUDE)
-
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+$(TARGET):
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(MAIN_DIR) $(APPLICATION_DIR) $(LIB_DIR)
 
 clean:
+	rm -f server
+	$(MAKE) -C $(SRCDIR) clean
+	$(MAKE) -C $(SRCDIR)/Application clean
 	$(MAKE) -C $(SRCDIR)/Lib clean
-	rm -f $(TARGET) $(OBJECTS)
 
 .PHONY: all clean
