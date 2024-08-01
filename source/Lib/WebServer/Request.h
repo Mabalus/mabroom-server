@@ -34,14 +34,14 @@ namespace lib {
 				lib::util::String method(void);
 				void trace(void);
 				lib::util::String version(void);
-				void *content(void);
+				lib::util::String content(void);
 
 			private:
 				std::shared_ptr<lib::webserver::Connection> po_connection;
 				lib::util::String st_url;
 				lib::util::String st_method;
 				lib::util::String st_version;
-				void *pmx_content;
+				std::shared_ptr<lib::util::String> pmx_content;
 				lib::util::UUID o_id;
 				std::shared_ptr<lib::webserver::request::Header> po_header;
 				std::shared_ptr<lib::webserver::request::Query> po_query;

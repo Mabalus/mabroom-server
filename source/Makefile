@@ -1,12 +1,11 @@
 TARGET = main.a
 
-CXX = clang++-16
-CXXFLAGS = -Wall -Wextra -std=c++20
-
+INCLUDE = ../include
 SOURCE = main.cpp
 OBJECT = $(SOURCE:.cpp=.o)
 
-LIBS = -lmicrohttpd -lpthread -luuid
+CXX = clang++-16
+CXXFLAGS = -Wall -Wextra -std=c++20 -I$(INCLUDE)
 
 all: message $(TARGET)
 
@@ -16,7 +15,7 @@ message:
 	@echo "================================="
 
 $(TARGET): $(OBJECT)
-	ar rcs $@ $^
+	ar rcs $@ $^ $(OBJECT)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@

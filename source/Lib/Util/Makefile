@@ -3,11 +3,8 @@ TARGET = util.a
 CXX = clang++-16
 CXXFLAGS = -Wall -Wextra -std=c++20
 
-
 SOURCE = $(wildcard ./*.cpp)
 OBJECT = $(SOURCE:.cpp=.o)
-
-LIBS = -lmicrohttpd -lpthread -luuid
 
 all: message $(TARGET)
 

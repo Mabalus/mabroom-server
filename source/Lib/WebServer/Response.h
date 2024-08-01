@@ -1,6 +1,7 @@
 #ifndef LIB_WEBSERVER_RESPONSE_H
 #define LIB_WEBSERVER_RESPONSE_H
 
+#include "Connection.h"
 #include "Response/Header.h"
 #include "../Util/String.h"
 #include <microhttpd.h>
@@ -14,16 +15,16 @@ namespace lib {
 		class Response {
 
 			public:
-				Response(MHD_Connection *);
+				Response(std::shared_ptr<lib::webserver::Connection>);
 				~Response();
-				lib::webserver::response::Header *header(void);
+				std::shared_ptr<lib::webserver::response::Header> header(void);
 				int send(u_int32_t in_code);
-				void setContent(lib::util::String *,lib::util::String);
+				void setContent(lib::util::String,lib::util::String);
 
 			private:
-				MHD_Connection *pt_connection;
-				lib::util::String *st_content;
-				lib::webserver::response::Header *o_header;
+				std::shared_ptr<lib::webserver::Connection> po_connection;
+				std::unique_ptr<lib::util::String> st_content;
+				std::shared_ptr<lib::webserver::response::Header> o_header;
 		};
 	}
 }

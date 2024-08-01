@@ -2,14 +2,14 @@
 
 lib::webserver::request::Header::Header(std::shared_ptr<lib::webserver::Connection> po_connection) {
 	 auto getHeaders = [](void *pmx_data, enum MHD_ValueKind en_kind, const char *pch_name, const char *pch_value) -> enum MHD_Result {
-        (void) en_kind;
+		(void) en_kind;
 		auto *phst_data = static_cast<std::unordered_map<std::string, std::string>*>(pmx_data);
 		lib::util::String st_name = lib::util::String(pch_name);
 		lib::util::String st_value = lib::util::String(pch_value);
 		st_name.toLower();
 		(*phst_data)[st_name] = st_value;
 		return MHD_YES;
-    };
+	};
 	this->phst_header = std::make_unique<std::unordered_map<std::string, std::string>>();
 	MHD_get_connection_values(po_connection->get(), MHD_HEADER_KIND, getHeaders, this->phst_header.get());
 }

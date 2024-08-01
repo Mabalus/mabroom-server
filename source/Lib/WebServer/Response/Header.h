@@ -3,6 +3,7 @@
 
 #include "../../Util/String.h"
 #include <iostream>
+#include <memory>
 #include <unordered_map>
 #include <vector>
 
@@ -17,13 +18,15 @@ namespace lib {
 				public:
 					Header();
 					~Header();
-					std::vector<lib::util::String> *list(void);
 					lib::util::String get(lib::util::String);
 					bool has(lib::util::String);
-					void set(lib::util::String, lib::util::String);
+					std::shared_ptr<const std::unordered_map<std::string, std::string>> iterator();
+					std::vector<lib::util::String> list(void);
+					void set(lib::util::String,lib::util::String);
+					void trace(void);
 					void unset(lib::util::String);
 				private:
-					std::unordered_map<std::string, std::string> vh_header;
+					std::shared_ptr<std::unordered_map<std::string, std::string>> phst_header;
 			};
 		}
 	}
