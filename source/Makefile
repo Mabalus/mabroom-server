@@ -1,6 +1,7 @@
-TARGET = main.a
+PATH_DIR = ..
 
-INCLUDE = ../include
+TARGET = $(PATH_DIR)/libs/main.a
+INCLUDE = $(PATH_DIR)/include
 SOURCE = main.cpp
 OBJECT = $(SOURCE:.cpp=.o)
 

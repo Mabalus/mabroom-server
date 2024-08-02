@@ -1,6 +1,7 @@
-TARGET = application.a
+PATH_DIR = ../..
 
-INCLUDE = ../../include
+TARGET = $(PATH_DIR)/libs/application.a
+INCLUDE = $(PATH_DIR)/include
 SOURCE = $(wildcard *.cpp)
 OBJECT = $(SOURCE:.cpp=.o)
 

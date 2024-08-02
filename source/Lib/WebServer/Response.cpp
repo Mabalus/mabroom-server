@@ -12,7 +12,7 @@ std::shared_ptr<lib::webserver::response::Header> lib::webserver::Response::head
 	return this->o_header;
 }
 
-int lib::webserver::Response::send(u_int32_t in_code) {
+bool lib::webserver::Response::send(uint16_t in_code) {
 	/*
 	* Prepare Content
 	*/
@@ -52,9 +52,9 @@ int lib::webserver::Response::send(u_int32_t in_code) {
 	/*
 	* Send Response
 	*/
-	int in_response = MHD_queue_response(this->po_connection->get(), in_code, t_response);
+	bool bo_response = MHD_queue_response(this->po_connection->get(), in_code, t_response);
 	MHD_destroy_response(t_response);
-	return in_response;
+	return bo_response;
 }
 
 void lib::webserver::Response::setContent(lib::util::String st_content,lib::util::String st_content_type) {

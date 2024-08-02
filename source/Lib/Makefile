@@ -1,10 +1,28 @@
-all:
-	$(MAKE) -C ./Util
-	$(MAKE) -C ./WebServer 
+TARGET = lib.a
 
+INCLUDE = ../../include
+SOURCE_DIR = $(shell find . -type d)
+SOURCE = $(foreach dir, $(SOURCE_DIR), $(wildcard $(dir)/*.cpp))
+
+OBJECT = $(SOURCE:.cpp=.o)
+
+CXX = clang++-16
+CXXFLAGS = -Wall -Wextra -std=c++20 -I$(INCLUDE)
+
+all: message $(TARGET)
+
+message:
+	@echo "=========================================="
+	@echo "======= ...Compiling Lib  ======="
+	@echo "=========================================="
+
+$(TARGET): $(OBJECT)
+	ar rcs $@ $^ $(OBJECT)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	$(MAKE) -C ./Util clean
-	$(MAKE) -C ./WebServer clean
+	rm -f $(TARGET) $(OBJECT)
 
 .PHONY: all clean

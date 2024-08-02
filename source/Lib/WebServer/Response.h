@@ -5,6 +5,7 @@
 #include "Response/Header.h"
 #include "../Util/String.h"
 #include <microhttpd.h>
+#include <cstdint>
 #include <cstring>
 #include <vector>
 
@@ -18,7 +19,7 @@ namespace lib {
 				Response(std::shared_ptr<lib::webserver::Connection>);
 				~Response();
 				std::shared_ptr<lib::webserver::response::Header> header(void);
-				int send(u_int32_t in_code);
+				bool send(uint16_t in_code);
 				void setContent(lib::util::String,lib::util::String);
 
 			private:

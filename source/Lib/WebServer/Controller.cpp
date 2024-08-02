@@ -1,7 +1,7 @@
 #include "Controller.h"
 
 lib::webserver::Controller::Controller(
-	u_int16_t uin_port,
+	uint16_t uin_port,
 	std::shared_ptr<callback_t> fn_callback
 ) : uin_port(uin_port), fn_callback(fn_callback) { }
 
@@ -9,11 +9,11 @@ lib::webserver::Controller::~Controller() {
 	this->stop();
 }
 
-u_int16_t lib::webserver::Controller::getPort(void) {
+uint16_t lib::webserver::Controller::getPort(void) {
 	return this->uin_port;
 }
 
-void lib::webserver::Controller::setPort(u_int16_t uin_port) {
+void lib::webserver::Controller::setPort(uint16_t uin_port) {
 	this->uin_port = uin_port;
 }
 
@@ -47,34 +47,36 @@ int lib::webserver::Controller::processRequest(
 	size_t *pin_content_size,
 	void **pmx_args
 ) {
-	callback_t *fn_callback = static_cast<callback_t *>(pmx_data);
+	callback_t *pfn_callback = static_cast<callback_t *>(pmx_data);
 	lib::util::String st_url(pch_url);
 	lib::util::String st_method(pch_method);
 	lib::util::String st_version(pch_version);
+	lib::util::String *pst_content = nullptr;
+	std::shared_ptr<lib::util::String> pst_body = nullptr;
 	std::shared_ptr<lib::webserver::Connection> po_connection = std::make_shared<lib::webserver::Connection>(pt_connection);
 	if(st_method == "DELETE" || st_method == "PATCH" || st_method == "POST" || st_method == "PUT") {
 		if(*pmx_args == nullptr) {
-			std::string *post_data = new std::string();
-			*pmx_args = post_data;
+			pst_content = new lib::util::String();
+			*pmx_args = pst_content;
 			return MHD_YES;
 		}
-		std::string *post_data = static_cast<std::string *>(*pmx_args);
+		pst_content = static_cast<lib::util::String *>(*pmx_args);
 		if(*pin_content_size != 0) {
-			post_data->append(pch_content);
+			pst_content->append(pch_content);
 			*pin_content_size = 0;
 			return MHD_YES;
-		} 
-		std::cout << "Received POST data: " << *post_data << std::endl;
-		const char *response_str = "Post received";
+		}
+		pst_body = std::make_shared<lib::util::String>(*pst_content); 
 	}
 	std::shared_ptr<lib::webserver::Request> o_request = std::make_shared<lib::webserver::Request>(
 		po_connection,
 		st_url,
 		st_method,
-		st_version
+		st_version,
+		pst_body
 	);
 	std::shared_ptr<lib::webserver::Response> o_response = std::make_shared<lib::webserver::Response>(po_connection);
-	(*fn_callback)(o_request,o_response);
+	(*pfn_callback)(o_request,o_response);
 	return 1;
 	
 }
