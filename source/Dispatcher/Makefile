@@ -1,6 +1,6 @@
 PATH_DIR = ../..
 
-TARGET = $(PATH_DIR)/libs/lib.a
+TARGET = $(PATH_DIR)/libs/dispatcher.a
 INCLUDE = $(PATH_DIR)/include
 SOURCE_DIR = $(shell find . -type d)
 SOURCE = $(foreach dir, $(SOURCE_DIR), $(wildcard $(dir)/*.cpp))
@@ -14,7 +14,7 @@ all: message $(TARGET)
 
 message:
 	@echo "=========================================="
-	@echo "=========== ...Compiling Lib  ============"
+	@echo "======== ...Compiling Dispatcher  ========"
 	@echo "=========================================="
 
 $(TARGET): $(OBJECT)

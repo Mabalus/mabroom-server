@@ -1,7 +1,7 @@
 #include "./Application/Controller.h"
 
 int main (void) {
-	Application::Controller o_application;
-	o_application.run();
+	std::shared_ptr<application::Controller> po_application = std::make_shared<application::Controller>();
+	po_application->run();
 	return 1;
 }
