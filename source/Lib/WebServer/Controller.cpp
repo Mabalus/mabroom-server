@@ -77,6 +77,6 @@ int lib::webserver::Controller::processRequest(
 	);
 	std::shared_ptr<lib::webserver::Response> o_response = std::make_shared<lib::webserver::Response>(po_connection);
 	(*pfn_callback)(o_request,o_response);
-	return 1;
+	return MHD_YES;
 	
 }

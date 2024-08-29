@@ -9,8 +9,6 @@
 #include <microhttpd.h>
 #include <iostream>
 #include <memory>
-#include <unordered_map>
-#include <vector>
 
 namespace lib {
 
@@ -34,7 +32,6 @@ namespace lib {
 				std::shared_ptr<lib::webserver::request::Header> header(void);
 				lib::util::UUID id(void);
 				lib::util::String method(void);
-				std::shared_ptr<std::vector<lib::util::String>> path(void);
 				std::shared_ptr<lib::webserver::request::Query> query(void);				
 				void trace(void);
 				lib::util::String url(void);

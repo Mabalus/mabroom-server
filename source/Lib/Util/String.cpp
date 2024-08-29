@@ -1,4 +1,5 @@
 #include "String.h"
+#include <iostream>
 
 lib::util::String::String(const std::string &st_input) : std::string(st_input) {}
 
@@ -24,14 +25,16 @@ std::shared_ptr<std::vector<lib::util::String>> lib::util::String::split(const l
 	size_t in_begin = 0;
 	size_t in_position = st_input.find(ch_delimiter);
 	while(in_position < in_input) {
-		pvst_token->push_back(st_input.substr(in_begin, in_position - in_begin));
+		if(in_position > in_begin)
+			pvst_token->push_back(st_input.substr(in_begin, in_position - in_begin));	
 		in_begin = in_position + 1;
 		in_position = st_input.find(ch_delimiter, in_begin);
 	}
-	if(pvst_token->size() < 1)
-		return nullptr;
-	pvst_token->push_back(st_input.substr(in_begin, in_position));	
-	return pvst_token;
+	if(in_begin > 0 && in_begin < in_input)
+		pvst_token->push_back(st_input.substr(in_begin, in_position));
+	if(pvst_token->size() > 0)
+		return pvst_token;
+	return nullptr;
 }
 
 std::shared_ptr<std::vector<lib::util::String>> lib::util::String::split(const lib::util::String st_input,const lib::util::String st_delimiter) {
@@ -43,14 +46,17 @@ std::shared_ptr<std::vector<lib::util::String>> lib::util::String::split(const l
 	size_t in_begin = 0;
 	size_t in_position = st_input.find(st_delimiter);
 	while(in_position < in_input) {
-		pvst_token->push_back(st_input.substr(in_begin, in_position - in_begin));
+		if(in_position > in_begin)
+			pvst_token->push_back(st_input.substr(in_begin, in_position - in_begin));
 		in_begin = in_position + in_delimiter;
 		in_position = st_input.find(st_delimiter, in_begin);
 	}
-	if(pvst_token->size() < 1)
-		return nullptr;
-	pvst_token->push_back(st_input.substr(in_begin, in_position));	
-	return pvst_token;
+	if(in_begin > 0 && in_begin < in_input)
+		pvst_token->push_back(st_input.substr(in_begin, in_position));
+	if(pvst_token->size() > 0)
+		return pvst_token;
+	return nullptr;
+	
 }
 
 std::shared_ptr<std::vector<lib::util::String>> lib::util::String::split(const lib::util::String st_input,const std::regex rx_delimiter) {

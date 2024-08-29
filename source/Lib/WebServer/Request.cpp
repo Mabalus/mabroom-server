@@ -20,7 +20,7 @@ lib::webserver::Request::Request(
 			this->pst_content_type = std::make_shared<lib::util::String>(pvst_result->at(0));
 			this->pst_boundary = std::make_shared<lib::util::String>(pvst_result->at(1));
 			size_t in_position = this->pst_boundary->find("boundary=");
-			size_t in_length = this->pst_boundary->length(); //9
+			size_t in_length = this->pst_boundary->length();
 			if(in_position < in_length)
 				this->pst_boundary = std::make_shared<lib::util::String>(this->pst_boundary->substr(in_position + 9,in_length));
 			else
@@ -57,10 +57,6 @@ lib::util::UUID lib::webserver::Request::id(void) {
 
 lib::util::String lib::webserver::Request::method(void) {
 	return	this->st_method;
-}
-
-std::shared_ptr<std::vector<lib::util::String>> lib::webserver::Request::path(void) {
-	return lib::util::String::split(this->st_url,"/");
 }
 
 std::shared_ptr<lib::webserver::request::Query> lib::webserver::Request::query(void) {
