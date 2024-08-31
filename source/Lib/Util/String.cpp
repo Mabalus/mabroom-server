@@ -1,5 +1,4 @@
 #include "String.h"
-#include <iostream>
 
 lib::util::String::String(const std::string &st_input) : std::string(st_input) {}
 
