@@ -1,7 +1,7 @@
 #ifndef LIB_JSON_Array_H
 #define LIB_JSON_Array_H
 
-#include "../Util/Type.h"
+#include "../Type.h"
 #include "../Util/String.h"
 #include <any>
 #include <cstdint>
@@ -50,7 +50,7 @@ namespace lib {
 				lib::util::String string(size_t);
 				void remove(size_t in_index);
 				size_t size(void);
-				void trace(uint8_t = 0);
+				void dump(uint8_t = 0);
 				lib::util::String json(uint8_t = 0);
 			private:
 				using array_t = std::vector<std::any>;

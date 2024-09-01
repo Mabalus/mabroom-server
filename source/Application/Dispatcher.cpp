@@ -33,7 +33,7 @@ std::shared_ptr<lib::webserver::Response> application::Dispatcher::response(void
 	return this->po_response;
 }
 
-void application::Dispatcher::trace(void) {
+void application::Dispatcher::dump(void) {
 	if(this->pvst_path) {
 		const size_t in_size = this->pvst_path->size();
 		std::cout << "[" << std::endl;

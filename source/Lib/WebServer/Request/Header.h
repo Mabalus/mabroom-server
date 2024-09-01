@@ -21,7 +21,7 @@ namespace lib {
 					~Header();
 					bool has(lib::util::String);
 					std::vector<lib::util::String> list(void);
-					void trace(void);
+					void dump(void);
 					lib::util::String operator[](lib::util::String);
 				private:
 					std::unique_ptr<std::unordered_map<std::string, std::string>> phst_header;

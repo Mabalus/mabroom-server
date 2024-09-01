@@ -1,0 +1,10 @@
+{
+	"webserver": {
+		"host": "0.0.0.0",
+		"port": 8000,
+		"tls": {
+			"cert": "/var/data/mabroom/secrets/mabroom.crt",
+			"key": "/var/data/mabroom/secrets/mabroom.key"
+		}
+	}
+}

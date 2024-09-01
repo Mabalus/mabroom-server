@@ -1,7 +1,7 @@
 #ifndef LIB_JSON_NODE_H
 #define LIB_JSON_NODE_H
 
-#include "../Util/Type.h"
+#include "../Type.h"
 #include "../Util/String.h"
 #include <any>
 #include <cstdint>
@@ -41,7 +41,7 @@ namespace lib {
 				lib::util::String string(lib::util::String);
 				bool has(lib::util::String);
 				void remove(lib::util::String);
-				void trace(uint8_t = 0);
+				void dump(uint8_t = 0);
 				lib::util::String json(uint8_t = 0);
 				const uint8_t type(lib::util::String);
 			private:

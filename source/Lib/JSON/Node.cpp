@@ -131,7 +131,7 @@ void lib::json::Node::remove(lib::util::String st_name) {
 	this->hmx_node.erase(st_name);
 }
 
-void lib::json::Node::trace(uint8_t in_ident) {
+void lib::json::Node::dump(uint8_t in_ident) {
 	std::string st_ident = std::string(in_ident, '\t');
 	for(const std::pair<std::string,std::any> &mx_value : this->hmx_node) {
 		if(mx_value.second.type() == typeid(bool)) {
@@ -149,12 +149,12 @@ void lib::json::Node::trace(uint8_t in_ident) {
 		} else if(mx_value.second.type() == typeid(std::shared_ptr<lib::json::Node>)) {
 			std::shared_ptr<lib::json::Node> po_child = std::any_cast<std::shared_ptr<lib::json::Node>>(mx_value.second);
 			std::cout << st_ident << "(Node) " << mx_value.first << ": {"  << std::endl;
-			po_child->trace(in_ident + 1);
+			po_child->dump(in_ident + 1);
 			std::cout << st_ident << "}"  << std::endl;
 		} else if(mx_value.second.type() == typeid(std::shared_ptr<lib::json::Array>)) {
 			std::shared_ptr<lib::json::Array> po_child = std::any_cast<std::shared_ptr<lib::json::Array>>(mx_value.second);
 			std::cout << st_ident << "(Array) " << mx_value.first << ": ["  << std::endl;
-			po_child->trace(in_ident + 1);
+			po_child->dump(in_ident + 1);
 			std::cout << st_ident << "]"  << std::endl;
 		}
 	}

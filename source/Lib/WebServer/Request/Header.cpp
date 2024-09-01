@@ -28,7 +28,7 @@ std::vector<lib::util::String> lib::webserver::request::Header::list(void) {
     return vst_name;
 }
 
-void lib::webserver::request::Header::trace(void) {
+void lib::webserver::request::Header::dump(void) {
 	std::cout << "===== Header Section =====" << std::endl;
 	for(const auto &o_header : *this->phst_header)
 		std::cout << "\t" << o_header.first << ": " << o_header.second << std::endl;

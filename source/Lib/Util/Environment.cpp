@@ -45,7 +45,7 @@ std::shared_ptr<lib::util::String> lib::util::Environment::get(lib::util::String
 	return pst_environment;
 }
 
-void lib::util::Environment::trace(void) {
+void lib::util::Environment::dump(void) {
 	if(environ == nullptr) {
 		std::cerr << "Nenhuma variável de ambiente encontrada." << std::endl;
 		return;

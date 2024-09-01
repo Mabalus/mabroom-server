@@ -32,7 +32,7 @@ void lib::webserver::response::Header::set(lib::util::String st_name,lib::util::
 	(*this->phst_header)[st_name] = st_value;
 }
 
-void lib::webserver::response::Header::trace(void) {
+void lib::webserver::response::Header::dump(void) {
 	std::cout << "===== Header Section =====" << std::endl;
 	for(const auto &o_header : *this->phst_header)
 		std::cout << "\t" << o_header.first << ": " << o_header.second << std::endl;

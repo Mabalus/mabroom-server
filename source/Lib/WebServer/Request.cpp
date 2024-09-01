@@ -63,7 +63,7 @@ std::shared_ptr<lib::webserver::request::Query> lib::webserver::Request::query(v
 	return this->po_query;
 }
 
-void lib::webserver::Request::trace(void) {
+void lib::webserver::Request::dump(void) {
 	std::cout << "=====================================" << std::endl;
 	std::cout << "============== REQUEST ==============" << std::endl;
 	std::cout << "=====================================" << std::endl;
@@ -81,8 +81,8 @@ void lib::webserver::Request::trace(void) {
 			std::cout << " payload : " << *this->pst_body << std::endl;
 	}
 	
-	this->po_header->trace();
-	this->po_query->trace();
+	this->po_header->dump();
+	this->po_query->dump();
 }
 
 lib::util::String lib::webserver::Request::url(void) {

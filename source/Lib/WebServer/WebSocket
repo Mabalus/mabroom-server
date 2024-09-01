@@ -1,0 +1,58 @@
+#include <microhttpd.h>
+#include <uwebsocketss/server.h>
+#include <string>
+#include <iostream>
+
+// Função de tratamento de requisição HTTP usando libmicrohttpd
+int http_request_handler(void *cls, MHD_Connection *connection, const char *url, const char *method,
+                         const char *version, const char *upload_data, size_t *upload_data_size,
+                         void **con_cls) {
+    const char *response_text = "Hello from HTTP!";
+    MHD_Response *response = MHD_create_response_from_buffer(strlen(response_text), (void*)response_text, MHD_RESPMEM_PERSISTENT);
+    int ret = MHD_queue_response(connection, MHD_HTTP_OK, response);
+    MHD_destroy_response(response);
+    return ret;
+}
+
+// Função para iniciar o servidor HTTP
+MHD_Daemon* start_http_server() {
+    MHD_Daemon *daemon = MHD_start_daemon(MHD_USE_SELECT_INTERNALLY, 8080, nullptr, nullptr, &http_request_handler, nullptr, MHD_OPTION_END);
+    if (daemon == nullptr) {
+        std::cerr << "Failed to start HTTP server" << std::endl;
+    }
+    return daemon;
+}
+
+// Função para iniciar o servidor WebSocket usando uWebSockets
+void start_websocket_server() {
+    uWS::App().ws<false>("/*", {
+        .open = [](auto *ws) {
+            std::cout << "WebSocket connection opened" << std::endl;
+        },
+        .message = [](auto *ws, std::string_view message, uWS::OpCode opCode) {
+            ws->send(message, opCode);
+        },
+        .close = [](auto *ws, int code, std::string_view message) {
+            std::cout << "WebSocket connection closed" << std::endl;
+        }
+    }).listen(8080, [](auto *token) {
+        if (token) {
+            std::cout << "WebSocket server started" << std::endl;
+        } else {
+            std::cerr << "Failed to start WebSocket server" << std::endl;
+        }
+    }).run();
+}
+
+int main() {
+    // Start HTTP server
+    MHD_Daemon *http_daemon = start_http_server();
+
+    // Start WebSocket server
+    start_websocket_server();
+
+    // Clean up
+    MHD_stop_daemon(http_daemon);
+
+    return 0;
+}

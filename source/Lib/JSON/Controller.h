@@ -3,7 +3,7 @@
 
 #include "Array.h"
 #include "Node.h"
-#include "../Util/Type.h"
+#include "../Type.h"
 #include "../Util/String.h"
 #include <any>
 #include <cctype>

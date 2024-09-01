@@ -16,7 +16,7 @@ lib::util::String lib::util::UUID::string(void) {
 	return lib::util::String(ch_uuid);
 }
 
-void lib::util::UUID::trace(void) {
+void lib::util::UUID::dump(void) {
 	char uuid_str[37];
 	uuid_unparse(this->t_uuid, uuid_str);
 	std::cout << "UUIDv4: " << uuid_str << std::endl;

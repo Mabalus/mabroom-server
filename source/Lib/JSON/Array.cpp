@@ -143,7 +143,7 @@ size_t lib::json::Array::size(void) {
 	return this->vmx_array.size();
 }
 
-void lib::json::Array::trace(uint8_t in_ident) {
+void lib::json::Array::dump(uint8_t in_ident) {
 	std::string st_ident = std::string(in_ident, '\t');
 	const size_t in_size = this->vmx_array.size();
 	for(std::size_t in_index = 0;in_index < in_size;in_index++) {
@@ -163,12 +163,12 @@ void lib::json::Array::trace(uint8_t in_ident) {
 		} else if(mx_value.type() == typeid(std::shared_ptr<lib::json::Node>)) {
 			std::shared_ptr<lib::json::Node> po_child = std::any_cast<std::shared_ptr<lib::json::Node>>(mx_value);
 			std::cout << st_ident << "(Node) " << "{"  << std::endl;
-			po_child->trace(in_ident + 1);
+			po_child->dump(in_ident + 1);
 			std::cout << st_ident << "}"  << std::endl;
 		} else if(mx_value.type() == typeid(std::shared_ptr<lib::json::Array>)) {
 			std::shared_ptr<lib::json::Array> pt_array = std::any_cast<std::shared_ptr<lib::json::Array>>(mx_value);
 			std::cout << st_ident << "(Array) " << "["  << std::endl;
-			pt_array->trace(in_ident + 1);
+			pt_array->dump(in_ident + 1);
 			std::cout << st_ident << "]"  << std::endl;
 		}
 	}

@@ -33,7 +33,7 @@ namespace lib {
 				lib::util::UUID id(void);
 				lib::util::String method(void);
 				std::shared_ptr<lib::webserver::request::Query> query(void);				
-				void trace(void);
+				void dump(void);
 				lib::util::String url(void);
 				lib::util::String version(void);
 

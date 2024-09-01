@@ -11,7 +11,7 @@ namespace application {
 
 namespace dispatcher {
 
-	class Base {
+	class Base final {
 		public:
 			static void routing(std::shared_ptr<application::Dispatcher>);
 	};

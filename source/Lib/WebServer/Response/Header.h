@@ -23,7 +23,7 @@ namespace lib {
 					std::shared_ptr<const std::unordered_map<std::string, std::string>> iterator();
 					std::vector<lib::util::String> list(void);
 					void set(lib::util::String,lib::util::String);
-					void trace(void);
+					void dump(void);
 					void unset(lib::util::String);
 				private:
 					std::shared_ptr<std::unordered_map<std::string, std::string>> phst_header;

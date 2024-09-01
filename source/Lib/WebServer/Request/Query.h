@@ -23,7 +23,7 @@ namespace lib {
 					~Query();
 					bool has(lib::util::String);
 					std::vector<lib::util::String> list(void);
-					void trace(void);
+					void dump(void);
 					std::any value(lib::util::String);
 					
 				private:

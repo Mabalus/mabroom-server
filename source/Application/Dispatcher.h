@@ -26,7 +26,7 @@ namespace application {
 			std::shared_ptr<lib::util::String> path(void);
 			std::shared_ptr<lib::webserver::Request> request(void);
 			std::shared_ptr<lib::webserver::Response> response(void);
-			void trace(void);
+			void dump(void);
 		private:
 			std::shared_ptr<application::Controller> po_application;
 			std::shared_ptr<lib::webserver::Request> po_request;

@@ -16,7 +16,7 @@ namespace lib {
 				~UUID();
 				const uuid_t &get(void) const;
 				lib::util::String string(void);
-				void trace(void);
+				void dump(void);
 				lib::util::UUID &operator=(const UUID &);
 
 			private:

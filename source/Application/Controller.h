@@ -6,6 +6,7 @@
 #include "../Dispatcher/Base.h"
 #include "../Lib/JSON/Controller.h"
 #include "../Lib/Util/Environment.h"
+#include "../Lib/Util/Exception.h"
 #include "../Lib/Util/String.h"
 #include "../Lib/WebServer/Controller.h"
 #include <cstdint>

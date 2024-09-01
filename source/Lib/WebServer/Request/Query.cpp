@@ -35,7 +35,7 @@ std::vector<lib::util::String> lib::webserver::request::Query::list(void) {
 	return vst_name;
 }
 
-void lib::webserver::request::Query::trace(void) {
+void lib::webserver::request::Query::dump(void) {
 	std::cout << "===== Query Section =====" << std::endl;
 	for(const auto &mx_value : *this->phmx_query) {
 		if(mx_value.second.type() == typeid(std::shared_ptr<lib::util::String>)) {
