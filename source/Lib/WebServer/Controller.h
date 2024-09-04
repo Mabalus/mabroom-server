@@ -27,10 +27,9 @@ namespace lib {
 				void setPort(uint16_t);
 
 			private:
-
 				MHD_Daemon *pt_daemon;
-				std::shared_ptr<callback_t> fn_callback;
 				uint16_t uin_port;
+				std::shared_ptr<callback_t> fn_callback;
 				static int processRequest(
 					void *,
 					MHD_Connection *,

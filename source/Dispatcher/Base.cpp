@@ -4,7 +4,7 @@
 void dispatcher::Base::routing(std::shared_ptr<application::Dispatcher> po_dispatcher) {
 	/*
 	lib::util::String st_json = R"({
-		"name": "John Doe",
+		"name": "John Doe"
 		"age": 30,
 		"is_student": false,
 		"marks": {
@@ -16,13 +16,18 @@ void dispatcher::Base::routing(std::shared_ptr<application::Dispatcher> po_dispa
 			"Bob"
 		]
 	})";
+	try {
+		std::shared_ptr<lib::json::Node> po_node = lib::json::Controller::parser(std::make_shared<lib::util::String>(st_json));
+	} catch(lib::util::Exception &e) {
+		std::cout << "============ EXCEPTION > " << std::endl;
+		e.dump();
+	}
 	*/
-	//std::shared_ptr<lib::json::Node> po_node = lib::json::Controller::parser(std::make_shared<lib::util::String>(st_json));
 	//po_dispatcher->dump();
 	std::shared_ptr<lib::util::String> pst_path = po_dispatcher->path();
 	if(!pst_path) {
 		lib::json::Node o_root;
-		o_root.insertKey("name","backend");
+		o_root.insertKey("name","server");
 		o_root.insertKey("version","0.1.0");
 		po_dispatcher->response()->setContent(o_root.json(),"application/json");
 		po_dispatcher->response()->send(200);

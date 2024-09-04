@@ -97,7 +97,7 @@ lib::util::String lib::json::Node::json(uint8_t in_ident) {
 		st_response += st_root_ident + "{\n";
 		bool bo_first = true;
 		lib::util::String st_key = "";
-		for(const std::pair<std::string,std::any> &o_key : this->hmx_node) {
+		for(const std::pair<const std::string,std::any> &o_key : this->hmx_node) {
 			if(bo_first == true) {
 				st_key = "";
 				bo_first = false;
@@ -112,7 +112,7 @@ lib::util::String lib::json::Node::json(uint8_t in_ident) {
 		st_response += "{";
 		bool bo_first = true;
 		lib::util::String st_key = "";
-		for(const std::pair<std::string,std::any> &o_key : this->hmx_node) {
+		for(const std::pair<const std::string,std::any> &o_key : this->hmx_node) {
 			if(bo_first == true) {
 				st_key = "";
 				bo_first = false;
@@ -133,7 +133,7 @@ void lib::json::Node::remove(lib::util::String st_name) {
 
 void lib::json::Node::dump(uint8_t in_ident) {
 	std::string st_ident = std::string(in_ident, '\t');
-	for(const std::pair<std::string,std::any> &mx_value : this->hmx_node) {
+	for(const std::pair<const std::string,std::any> &mx_value : this->hmx_node) {
 		if(mx_value.second.type() == typeid(bool)) {
 			bool bo_value = std::any_cast<bool>(mx_value.second);
 			std::cout << st_ident << "(boolean) " << mx_value.first << ": " << bo_value << std::endl;
@@ -160,11 +160,9 @@ void lib::json::Node::dump(uint8_t in_ident) {
 	}
 }
 
-const uint8_t lib::json::Node::type(lib::util::String st_name) {
+uint8_t lib::json::Node::type(lib::util::String st_name) {
 	std::any mx_value = this->hmx_node[st_name];
-	if(mx_value.type() == typeid(bool))
-		return 1;
-	else if(mx_value.type() == typeid(int64_t))
+	if(mx_value.type() == typeid(int64_t))
 		return 2;
 	else if(mx_value.type() == typeid(float128_t))
 		return 3;
@@ -174,6 +172,7 @@ const uint8_t lib::json::Node::type(lib::util::String st_name) {
 		return 0;
 	else if(mx_value.type() == typeid(std::shared_ptr<lib::json::Array>))
 		return 5;
+	return 1;
 }
 
 lib::util::String lib::json::Node::toJSON(std::any mx_value,uint8_t in_ident) {

@@ -3,7 +3,7 @@
 std::shared_ptr<lib::json::Node> lib::json::Controller::parser(std::shared_ptr<lib::util::String> pst_json) {
 	std::shared_ptr<size_t> pin_index = std::make_shared<size_t>(0);
 	if(pst_json->length() < 1)
-		throw new std::runtime_error("Invalid JSON");
+		throw lib::util::Exception(1,"ERR_JSON_PARSING","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 	return lib::json::Controller::processNode(pin_index,pst_json);
 }
 
@@ -15,13 +15,12 @@ void lib::json::Controller::findKey(
 	/*
 	* Find Begin
 	*/
-	size_t in_length = pst_json->length();
 	lib::json::Controller::skipBlank(pin_index,pst_json);
 	if(*pin_index >= pst_json->length())
-		throw new std::runtime_error("Invalid JSON");
+		throw lib::util::Exception(2,"ERR_JSON_FIND_KEY","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 	char ch_element = pst_json->at(*pin_index);
 	if(ch_element != '"')
-		throw new std::runtime_error("Invalid JSON");
+		throw lib::util::Exception(3,"ERR_JSON_FIND_KEY","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 	ch_element = pst_json->at(*pin_index);
 	(*pin_index)++;
 	/*
@@ -34,7 +33,7 @@ void lib::json::Controller::findKey(
 	lib::json::Controller::skipBlank(pin_index,pst_json);
 	ch_element = pst_json->at(*pin_index);
 	if(ch_element != ':')
-		throw new std::runtime_error("Invalid JSON");
+		throw lib::util::Exception(4,"ERR_JSON_FIND_KEY","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 	(*pin_index)++;
 	/*
 	* Process Value
@@ -59,7 +58,7 @@ void lib::json::Controller::findKey(
 	else if(ch_element == '{')
 		po_node->insertNode(st_name,lib::json::Controller::processNode(pin_index,pst_json));
 	else
-		throw new std::runtime_error("Invalid JSON");
+		throw lib::util::Exception(5,"ERR_JSON_FIND_KEY","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 }
 
 lib::util::String lib::json::Controller::findName(
@@ -71,7 +70,7 @@ lib::util::String lib::json::Controller::findName(
 	while(*pin_index < in_length) {
 		char ch_element = pst_json->at(*pin_index);
 		if(!isgraph(ch_element))
-			throw new std::runtime_error("Invalid JSON");
+			throw lib::util::Exception(6,"ERR_JSON_FIND_KEY_NAME","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 		if(ch_element == '/')
 			(*pin_index)++;
 		else if(ch_element == '"') {
@@ -81,13 +80,13 @@ lib::util::String lib::json::Controller::findName(
 		}
 		(*pin_index)++;
 	}
+	throw lib::util::Exception(14,"ERR_JSON_FIND_KEY_NAME","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 }
 
 std::shared_ptr<lib::json::Array> lib::json::Controller::processArray(
 	std::shared_ptr<size_t> pin_index,
 	std::shared_ptr<lib::util::String> pst_json
 ) {
-	size_t in_begin = *pin_index;
 	size_t in_length = pst_json->length();
 	(*pin_index)++;
 	std::shared_ptr<lib::json::Array> pvo_value = std::make_shared<lib::json::Array>();
@@ -119,10 +118,11 @@ std::shared_ptr<lib::json::Array> lib::json::Controller::processArray(
 			else if(ch_element == '{')
 				pvo_value->insert(lib::json::Controller::processNode(pin_index,pst_json));
 			else
-				throw new std::runtime_error("Invalid JSON");
+				throw lib::util::Exception(7,"ERR_JSON_PROCESS_ARRAY_VALUE","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 		}
 		(*pin_index)++;
 	}
+	throw lib::util::Exception(15,"ERR_JSON_PROCESS_ARRAY_VALUE","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 }
 
 bool lib::json::Controller::processBooleanValue(
@@ -130,19 +130,18 @@ bool lib::json::Controller::processBooleanValue(
 	std::shared_ptr<lib::util::String> pst_json
 ) {
 	size_t in_begin = *pin_index;
-	size_t in_length = pst_json->length();
 	char ch_element = pst_json->at(*pin_index);
 	lib::util::String st_value;
 	if(ch_element == 'T' || ch_element == 't') {
 		st_value = lib::util::String::lower(pst_json->substr(in_begin,4));
 		if(st_value != "true")
-			throw new std::runtime_error("Invalid JSON");
+			throw lib::util::Exception(8,"ERR_JSON_PROCESS_BOOLEAN_VALUE","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 		(*pin_index) += 4;
 		return true;
 	} else {
 		st_value = lib::util::String::lower(pst_json->substr(in_begin,5));
 		if(st_value != "false")
-			throw new std::runtime_error("Invalid JSON");
+			throw lib::util::Exception(9,"ERR_JSON_PROCESS_BOOLEAN_VALUE","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 		(*pin_index) += 5;
 		return false;
 	}
@@ -158,10 +157,10 @@ std::shared_ptr<lib::json::Node> lib::json::Controller::processNode(
 	*/
 	lib::json::Controller::skipBlank(pin_index,pst_json);
 	if(*pin_index >= pst_json->length())
-		throw new std::runtime_error("Invalid JSON");
+		new lib::util::Exception(10,"ERR_JSON_PROCESS_NODE_VALUE","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 	char ch_element = pst_json->at(*pin_index);
 	if(ch_element != '{')
-		throw new std::runtime_error("Invalid JSON");
+		new lib::util::Exception(11,"ERR_JSON_PROCESS_NODE_VALUE","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 	(*pin_index)++;
 	/*
 	* Process Keys
@@ -175,16 +174,16 @@ std::shared_ptr<lib::json::Node> lib::json::Controller::processNode(
 			(*pin_index)++;
 			return po_node;
 		} else if(ch_element != ',')
-			throw new std::runtime_error("Invalid JSON");
+			throw lib::util::Exception(12,"ERR_JSON_PROCESS_NODE_VALUE","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 		(*pin_index)++;
 	}
+	throw lib::util::Exception(16,"ERR_JSON_PROCESS_NODE_VALUE","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 }
 
 std::any lib::json::Controller::processNumberValue(
 	std::shared_ptr<size_t> pin_index,
 	std::shared_ptr<lib::util::String> pst_json
 ) {
-	size_t in_begin = *pin_index;
 	size_t in_length = pst_json->length();
 	bool bo_dot = false;
 	lib::util::String st_value;
@@ -194,7 +193,7 @@ std::any lib::json::Controller::processNumberValue(
 			if(bo_dot == false)
 				bo_dot = true;
 			else
-				throw new std::runtime_error("Invalid JSON");
+				throw lib::util::Exception(13,"ERR_JSON_PROCESS_NUMBER_VALUE","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr); 
 		else if(!isdigit(ch_element))
 			break;
 		st_value += ch_element; 
@@ -227,6 +226,7 @@ lib::util::String lib::json::Controller::processStringValue(
 		}
 		(*pin_index)++;
 	}
+	throw lib::util::Exception(17,"ERR_JSON_PROCESS_STRING_VALUE","lib::json::Controller",__FUNCTION__,__LINE__,"Invalid JSON",nullptr);
 }
 
 void lib::json::Controller::skipBlank(

@@ -3,15 +3,17 @@
 lib::util::Exception::Exception(
 	uint16_t in_code,
 	lib::util::String st_tag,
-	lib::util::String st_file,
-	lib::util::String st_line,
+	lib::util::String st_class,
+	lib::util::String st_method,
+	uint64_t in_line,
 	lib::util::String st_message,
 	std::shared_ptr<lib::util::Exception> po_exception
 ) :
 	in_code(in_code),
 	st_tag(st_tag),
-	st_file(st_file),
-	st_line(st_line),
+	st_class(st_class),
+	st_method(st_method),
+	in_line(in_line),
 	st_message(st_message),
 	po_child(po_exception)
 {
@@ -29,12 +31,16 @@ lib::util::String lib::util::Exception::tag(void) {
 	return this->st_tag;
 }
 
-lib::util::String lib::util::Exception::file(void) {
-	return this->st_file;
+lib::util::String lib::util::Exception::classname(void) {
+	return this->st_class;
 }
 
-lib::util::String lib::util::Exception::line(void) {
-	return this->st_line;
+lib::util::String lib::util::Exception::method(void) {
+	return this->st_method;
+}
+
+uint64_t lib::util::Exception::line(void) {
+	return this->in_line;
 }
 
 lib::util::String lib::util::Exception::message(void) {
@@ -57,8 +63,9 @@ void lib::util::Exception::dump(void) {
 	std::cout << "================================" << std::endl;
 	std::cout << "\t CODE> " << +this->in_code << std::endl;
 	std::cout << "\t TAG> " << this->st_tag << std::endl;
-	std::cout << "\t FILE> " << this->st_file << std::endl;
-	std::cout << "\t LINE> " << this->st_line << std::endl;
+	std::cout << "\t CLASS> " << this->st_class << std::endl;
+	std::cout << "\t METHOD> " << this->st_method << std::endl;
+	std::cout << "\t LINE> " << +this->in_line << std::endl;
 	std::cout << "\t MESSAGE> " << this->st_message << std::endl;
 	std::cout << "\t LOGGED> " << this->in_nanotimestamp << std::endl;
 };

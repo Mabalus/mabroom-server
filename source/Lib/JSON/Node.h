@@ -43,7 +43,7 @@ namespace lib {
 				void remove(lib::util::String);
 				void dump(uint8_t = 0);
 				lib::util::String json(uint8_t = 0);
-				const uint8_t type(lib::util::String);
+				uint8_t type(lib::util::String);
 			private:
 				using node_t = std::unordered_map<std::string,std::any>;
 				lib::json::Node::node_t hmx_node;

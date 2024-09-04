@@ -4,6 +4,7 @@
 #include "Array.h"
 #include "Node.h"
 #include "../Type.h"
+#include "../Util/Exception.h"
 #include "../Util/String.h"
 #include <any>
 #include <cctype>

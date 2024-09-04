@@ -40,14 +40,14 @@ namespace lib {
 			private:
 				lib::util::UUID o_id;
 				std::shared_ptr<lib::webserver::Connection> po_connection;
-				std::shared_ptr<lib::webserver::request::Header> po_header;
-				std::shared_ptr<lib::webserver::request::Query> po_query;
+				lib::util::String st_url;
+				lib::util::String st_method;
+				lib::util::String st_version;
 				std::shared_ptr<lib::util::String> pst_body;
 				std::shared_ptr<lib::util::String> pst_boundary;
 				std::shared_ptr<lib::util::String> pst_content_type;
-				lib::util::String st_method;
-				lib::util::String st_url;
-				lib::util::String st_version;
+				std::shared_ptr<lib::webserver::request::Header> po_header;
+				std::shared_ptr<lib::webserver::request::Query> po_query;
 		};
 	}
 }
