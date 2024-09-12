@@ -174,7 +174,7 @@ void lib::json::Array::dump(uint8_t in_ident) {
 	}
 }
 
-lib::util::String lib::json::Array::json(uint8_t in_ident) {
+lib::util::String lib::json::Array::toString(uint8_t in_ident) {
 	lib::util::String st_response = "";
 	const size_t in_size = this->vmx_array.size();
 	if(in_ident > 0) {
@@ -190,7 +190,7 @@ lib::util::String lib::json::Array::json(uint8_t in_ident) {
 				bo_first = false;
 			} else
 				st_key = ",\n";
-			st_key += st_ident + this->toJSON(mx_value,in_ident);
+			st_key += st_ident + this->makeJSON(mx_value,in_ident);
 			st_response += st_key;
 		}
 		st_response += st_root_ident + "\n]";
@@ -205,7 +205,7 @@ lib::util::String lib::json::Array::json(uint8_t in_ident) {
 				bo_first = false;
 			} else
 				st_key = ",";
-			st_key += this->toJSON(mx_value,in_ident);
+			st_key += this->makeJSON(mx_value,in_ident);
 			st_response += st_key;
 		}
 		st_response += "]";
@@ -213,7 +213,7 @@ lib::util::String lib::json::Array::json(uint8_t in_ident) {
 	return st_response;
 }
 
-lib::util::String lib::json::Array::toJSON(std::any mx_value,uint8_t in_ident) {
+lib::util::String lib::json::Array::makeJSON(std::any mx_value,uint8_t in_ident) {
 	lib::util::String st_key = "";
 	if(in_ident > 0)
 		in_ident++;
@@ -233,10 +233,10 @@ lib::util::String lib::json::Array::toJSON(std::any mx_value,uint8_t in_ident) {
 		st_key += "\"" + st_value + "\"";
 	} else if(mx_value.type() == typeid(std::shared_ptr<lib::json::Node>)) {
 		std::shared_ptr<lib::json::Node> po_child = std::any_cast<std::shared_ptr<lib::json::Node>>(mx_value);
-		st_key += po_child->json(in_ident);
+		st_key += po_child->toString(in_ident);
 	} else if(mx_value.type() == typeid(std::shared_ptr<lib::json::Array>)) {
 		std::shared_ptr<lib::json::Array> pvmx_child = std::any_cast<std::shared_ptr<lib::json::Array>>(mx_value);
-		st_key += pvmx_child->json(in_ident);
+		st_key += pvmx_child->toString(in_ident);
 	}
 	return st_key;
 }

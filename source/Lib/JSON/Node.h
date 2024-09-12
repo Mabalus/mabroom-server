@@ -2,6 +2,7 @@
 #define LIB_JSON_NODE_H
 
 #include "../Type.h"
+#include "../Util/Exception.h"
 #include "../Util/String.h"
 #include <any>
 #include <cstdint>
@@ -42,12 +43,12 @@ namespace lib {
 				bool has(lib::util::String);
 				void remove(lib::util::String);
 				void dump(uint8_t = 0);
-				lib::util::String json(uint8_t = 0);
+				lib::util::String toString(uint8_t = 0);
 				uint8_t type(lib::util::String);
 			private:
 				using node_t = std::unordered_map<std::string,std::any>;
 				lib::json::Node::node_t hmx_node;
-				lib::util::String toJSON(std::any,uint8_t);
+				lib::util::String makeJSON(std::any,uint8_t);
 		};
 	}
 
